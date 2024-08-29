@@ -74,4 +74,23 @@ describe('AdminContext', () => {
         const text = screen.getByText('Test');
         expect(getComputedStyle(text).color).toBe(LIGHT_MODE_TEXT_COLOR);
     });
+    it('should apply a custom theme correctly', () => {
+        const customTheme = createTheme({
+            palette: {
+                primary: {
+                    main: '#ff5722', // Custom color (Deep Orange)
+                },
+            },
+        });
+
+        render(
+            <ThemeTestWrapper>
+                <AdminContext theme={customTheme}>
+                    <Typography color="primary">Test</Typography>
+                </AdminContext>
+            </ThemeTestWrapper>
+        );
+        const text = screen.getByText('Test');
+        expect(getComputedStyle(text).color).toBe('rgb(255, 87, 34)'); // RGB value of #ff5722
+    });
 });
