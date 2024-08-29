@@ -7,6 +7,11 @@ on:
       - next
   pull_request:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   typecheck:
     runs-on: ubuntu-latest
@@ -32,6 +37,9 @@ jobs:
         name: packages-build
         path: packages-build.zip
         retention-days: 1
+    - name: Fix my build
+      uses: fly-ci/wingman-action@v1
+      if: failure()
 
   simple-example-typecheck:
     runs-on: ubuntu-latest
@@ -54,6 +62,9 @@ jobs:
       run: unzip -o -u packages-build.zip
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
+    - name: Fix my build
+      uses: fly-ci/wingman-action@v1
+      if: failure()
 
   doc-check:
     runs-on: ubuntu-latest
@@ -79,6 +90,9 @@ jobs:
         run: make test-unit
         env:
           CI: true
+      - name: Fix my build
+        uses: fly-ci/wingman-action@v1
+        if: failure()
 
   e2e-test:
     runs-on: ubuntu-latest
@@ -96,6 +110,9 @@ jobs:
         run: make test-e2e
         env:
           CI: true
+      - name: Fix my build
+        uses: fly-ci/wingman-action@v1
+        if: failure()
 
   e-commerce:
     runs-on: ubuntu-latest
@@ -130,6 +147,9 @@ jobs:
           name: demo-build
           path: demo-build.zip
           retention-days: 1
+      - name: Fix my build
+        uses: fly-ci/wingman-action@v1
+        if: failure()
 
   crm:
     runs-on: ubuntu-latest
@@ -152,6 +172,9 @@ jobs:
         run: unzip -o -u packages-build.zip
       - name: Build crm
         run: make build-crm
+      - name: Fix my build
+        uses: fly-ci/wingman-action@v1
+        if: failure()
 
   greenframe:
     runs-on: ubuntu-latest
@@ -185,6 +208,9 @@ jobs:
         uses: marmelab/greenframe-action@1.0.0
         env:
           GREENFRAME_SECRET_TOKEN: ${{secrets.GREENFRAME_SECRET_TOKEN}}
+      - name: Fix my build
+        uses: fly-ci/wingman-action@v1
+        if: failure()
 
   create-react-admin:
     runs-on: ubuntu-latest
@@ -208,3 +234,6 @@ jobs:
       - name: Run the tests
         working-directory: ./myadmin
         run: npm run test
+      - name: Fix my build
+        uses: fly-ci/wingman-action@v1
+        if: failure()
