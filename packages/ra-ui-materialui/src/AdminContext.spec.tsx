@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { Typography } from '@mui/material';
 import expect from 'expect';
 import { memoryStore } from 'ra-core';
-import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from './AdminContext';
 import { ThemeTestWrapper } from './layout/ThemeTestWrapper';
